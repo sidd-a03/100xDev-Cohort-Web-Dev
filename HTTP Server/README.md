@@ -1,0 +1,1 @@
+Checkout [HTTP Server Notes](https://projects.100xdevs.com/tracks/http-intro/Intro-to-HTTP-1)
