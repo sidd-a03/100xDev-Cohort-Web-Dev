@@ -1,0 +1,1 @@
+Checkout [Notes](https://projects.100xdevs.com/tracks/http-deep-dive/HTTP-Deep-dive-9)
