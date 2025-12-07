@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { UserModel, TodoModel } from "./db.js";
 import mongoose from "mongoose";
 import authMiddleware from "./middlewares/auth.middleware.js";
+import bcrypt from "bcrypt";
 
 await mongoose.connect("mongodb+srv://achintasiddhanta0304_db_user:TgmPfNwW1rpBGWFq@cluster0.gfjyypd.mongodb.net/todo-app")
 
@@ -17,9 +18,11 @@ app.post('/signup', async (req, res) => {
     const password = req.body.password;
     const name = req.body.name;
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     await UserModel.create({
         username,
-        password,
+        password: hashedPassword,
         name
     });
 
@@ -32,11 +35,17 @@ app.post('/signin', async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
-    const user = await UserModel.findOne({ username, password });
+    const user = await UserModel.findOne({ username });
 
-    console.log(user);
+    if (!user) {
+        res.status(403).json({
+            message: 'User Not Found',
+        })
+    }
 
-    if (user) {
+    const passwordMatched = await bcrypt.compare(password, user.password);
+
+    if (passwordMatched) {
         const token = jwt.sign({
             id: user._id.toString()
         }, secret);
