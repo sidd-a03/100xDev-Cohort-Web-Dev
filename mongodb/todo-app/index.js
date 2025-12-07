@@ -20,15 +20,21 @@ app.post('/signup', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await UserModel.create({
-        username,
-        password: hashedPassword,
-        name
-    });
+    try {
+        await UserModel.create({
+            username,
+            password: hashedPassword,
+            name
+        });
 
-    res.json({
-        message: 'User successfully created!',
-    })
+        res.json({
+            message: 'User successfully created!',
+        })
+    } catch (e) {
+        res.json({
+            message: "Error creating user",
+        })
+    }
 })
 
 app.post('/signin', async (req, res) => {
