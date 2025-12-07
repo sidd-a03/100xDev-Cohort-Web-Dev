@@ -4,6 +4,7 @@ import { UserModel, TodoModel } from "./db.js";
 import mongoose from "mongoose";
 import authMiddleware from "./middlewares/auth.middleware.js";
 import bcrypt from "bcrypt";
+import { z } from "zod";
 
 await mongoose.connect("mongodb+srv://achintasiddhanta0304_db_user:TgmPfNwW1rpBGWFq@cluster0.gfjyypd.mongodb.net/todo-app")
 
@@ -14,6 +15,21 @@ const app = express();
 app.use(express.json());
 
 app.post('/signup', async (req, res) => {
+    const requiredBody = z.object({
+        username: z.email(),
+        password: z.string(),
+        name: z.string().min(3).max(100)
+    });
+
+    const parsedDataWithSuccess = requiredBody.safeParse(req.body);
+
+    if (!parsedDataWithSuccess.success) {
+        res.json({
+            message: "Incorrect format",
+            error: parsedDataWithSuccess.error.issues
+        })
+    }
+
     const username = req.body.username;
     const password = req.body.password;
     const name = req.body.name;
@@ -42,7 +58,6 @@ app.post('/signin', async (req, res) => {
     const password = req.body.password;
 
     const user = await UserModel.findOne({ username });
-
     if (!user) {
         res.status(403).json({
             message: 'User Not Found',
