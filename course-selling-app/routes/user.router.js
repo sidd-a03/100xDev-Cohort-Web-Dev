@@ -1,12 +1,11 @@
 import { Router } from 'express';
+import validateMiddleware from "../middlewares/validate.middleware.js";
+import {signUpSchema} from "../schemas/common.schema.js";
+import {signUpController} from "../controllers/auth.controller.js";
 
 const userRouter = Router();
 
-userRouter.post('/signup', (req, res) => {
-    res.json({
-        message: 'Signup endpoint'
-    })
-});
+userRouter.post('/signup', validateMiddleware(signUpSchema), signUpController);
 
 userRouter.post('/signin', (req, res) => {
     res.json({
