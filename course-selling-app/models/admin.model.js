@@ -6,4 +6,6 @@ const adminSchema = new mongoose.Schema({
     name: { type: String, required: true },
 }, { timestamps: true })
 
-export default adminModel = mongoose.model('admins', adminSchema);
+const AdminModel = mongoose.model('admins', adminSchema);
+
+export default AdminModel;

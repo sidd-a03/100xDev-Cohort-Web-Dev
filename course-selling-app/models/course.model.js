@@ -8,6 +8,6 @@ const courseSchema = new mongoose.Schema({
     creatorId: { type: mongoose.Schema.Types.ObjectId, required: true },
 }, { timestamps: true })
 
-const courseModel = mongoose.model('course', courseSchema)
+const CourseModel = mongoose.model('course', courseSchema)
 
-export default courseModel;
+export default CourseModel;
