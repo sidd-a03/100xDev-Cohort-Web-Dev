@@ -10,6 +10,10 @@ wss.on("connection", (socket) => {
     }, 500)
 
     socket.on("message", (msg) => {
-        console.log("Received message: " + msg);
+        console.log(msg.toString());
+        console.log(msg.toString() === "ping");
+        if (msg.toString() === "ping") {
+            socket.send("pong");
+        }
     })
 })
